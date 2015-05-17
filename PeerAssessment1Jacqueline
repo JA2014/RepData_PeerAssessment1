@@ -1,0 +1,42 @@
+---
+title: "PA1_template"
+author: "JA"
+date: "Sunday, May 17, 2015"
+output: html_document
+---
+
+This is an R Markdown document for the peer assessment 1
+
+Load the data (i.e. read.csv())
+create the directory, download, unzip the file and  create an Object R of the data
+
+```{r load, echo=TRUE}
+if(!file.exists("./data/activity.zip")) 
+{
+  dir.create("./data")
+  fileURL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+  download.file(fileURL,destfile="./data/activity.zip", method="auto")
+  unzip("activity.zip")
+}
+loadData <- read.csv("activity.csv", sep=',', stringsAsFactors=FALSE, header=TRUE, na.strings='NA')
+
+```
+2  Process/transform the data (if necessary) into a format suitable for your analysis.
+
+
+```{r format, echo=TRUE}
+loadData$date <- Sys.Date() ## Covert in date format.
+```
+3.mean total number of steps taken per day?
+
+```{r calcul number of steps by date and makeplot, echo=TRUE}
+loadData[1:17568,]
+good <- complete.cases(loadData)
+ loadData[good,][1:17568]
+  sort(loadData[good,][1:17568,]$steps)
+xyplot(sort(loadData[good,][1:17568,]$steps)~date, data=loadData)
+dev.copy(png, file="plotTotal.png")## copy le Plot dans un fichier de format PNG
+> dev.off()## ferme le PNG device.
+
+```
+
